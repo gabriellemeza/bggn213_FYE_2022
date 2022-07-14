@@ -33,10 +33,15 @@ clean.data <- data[data$variant_name != "Total", ]
 
 
 ```{r}
-#Use ggplot to make initial line graph of % of each variant over time, and modified labels. Assign to variable so modifications are easier
+#Use ggplot to make initial line graph of % of each variant over time, and modified labels. 
+#Assign to variable so modifications are easier
+
 plot <-ggplot(clean.data, aes(x=date, y=percentage, colour = variant_name)) +
   geom_line() +
-  labs (x= "", y="Percentage of Sequenced Specimens", colour="Variant", title = "COVID-19 Variants in California")
+  labs (x= "",
+        y="Percentage of Sequenced Specimens",
+        colour="Variant",
+        title = "COVID-19 Variants in California")
 
 plot
 ```
@@ -49,8 +54,9 @@ p
 ```
 
 ```{r}
-#Start changing plot to make it look nice, edits in these to adress the following in order:
-#angle/ dates , remove minor axis lines, remove ledgend background, center title, resize axis, resize ledgend text,
+#Start changing plot to make it look nice, edits in these to address the following in order:
+#angle/ dates , remove minor axis lines, remove legend background, center title, 
+#resize axis, resize ledgend text,
 
 p1 <-p +
   theme(axis.text.x=element_text(angle=60, hjust=1, colour = "black"),
