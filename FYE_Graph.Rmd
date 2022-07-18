@@ -4,38 +4,54 @@ author: "Gabrielle Meza (A13747395)"
 date: "7/13/2022"
 output: pdf_document
 ---
+# Initial Set up 
 
-```{r}
-#Loading packages needed:
+## Load Packages
+
+Removed messages for loading to make Rmarkdown cleaner (message=FALSE)
+
+Loaded RcolorBrewer for last step to changing colors
+
+```{r message=FALSE}
 library(ggplot2)
 library(dplyr)
 library(lubridate)
 library(RColorBrewer)
 ```
 
-Import COVID 19 variant data
+## Import data
+
+Import COVID 19 variant data. Use head to get sense of data rows/columns
 
 ```{r}
-# Import COVID 19 variant data
 data <- read.csv("covid19_variants.csv")
 head(data)
 ```
 
+# Modify dataset 
+
+### Lubridate and filter data
+
+Use lubridate to specify that the date column in data set will use year-month-day format. 
+
+Using data$colun name != (does not equal total) to get new dataset that does not include total values for each date. Can also use dyplr and >> % filtering if data set is more complex/ want to filter out specfic parts in columns or rows 
+
 
 ```{r}
-#Using lubridate to specficy that the date column in dataset will use year-month-day format
-
 data$date <- ymd(data$date)
 
-#Remove total values from data 
 clean.data <- data[data$variant_name != "Total", ]
 ```
 
+# Using GGplot
+
+## Getting started 
+
+Use ggplot to make initial line graph of % of each variant over time, and modified labels. 
+
+Assign initial plot to variable so later modifications are easier
 
 ```{r}
-#Use ggplot to make initial line graph of % of each variant over time, and modified labels. 
-#Assign to variable so modifications are easier
-
 plot <-ggplot(clean.data, aes(x=date, y=percentage, colour = variant_name)) +
   geom_line() +
   labs (x= "",
@@ -46,18 +62,37 @@ plot <-ggplot(clean.data, aes(x=date, y=percentage, colour = variant_name)) +
 plot
 ```
 
+## Plot Modifications
+
+### Format dates 
+
+Assigned 1 month interval for x-axis, and used dyplr to put in format Month, year. then view graph to ensure it worked. Assign to new variable to make next modifications easier. 
+
 ```{r}
-#Format dates using dyplr
 p <- plot +
   scale_x_date(date_breaks = "1 month", date_labels =  "%b %Y")
 p
 ```
 
-```{r}
-#Start changing plot to make it look nice, edits in these to address the following in order:
-#angle/ dates , remove minor axis lines, remove legend background, center title, 
-#resize axis, resize ledgend text,
+### Visual edits 
 
+Changing plot to make it look nice.
+
+Edits made to address the following (in order):
+
+* angle/ dates
+
+* Remove minor axis lines (looks less cluttered)
+
+* Removed legend background 
+
+* Center graph title
+
+* Resize text of axis (Bigger)
+
+* Resize Legend title (Bigger)
+
+```{r}
 p1 <-p +
   theme(axis.text.x=element_text(angle=60, hjust=1, colour = "black"),
         panel.grid.minor = element_blank(),
@@ -68,8 +103,11 @@ p1 <-p +
 p1
 ```
 
+### Custom colors
+
+Finally, changing colors to be prettier using 'Paired' pallet from RcolorBrewer and assign final graph:)
+
 ```{r}
-#Finally, changing colors to be prettier using pallet from RcolorBrewer and assign final graph:)
 p.final <- p1 + scale_color_brewer(palette = "Paired")
 p.final
 ```
